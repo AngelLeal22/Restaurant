@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabores del Mediterráneo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1>Sabores del Mediterráneo</h1>
+            </div>
+            <p>Donde cada bocado es un viaje</p>
+        </header>
+
+        <main>
+            <div class="order-panel">
+                <h2><i class="fas fa-list-ol"></i> Arma tu Menú</h2>
+                <div class="product-selection">
+                    <div class="product-option">
+                        <label for="product1"><i class="fas fa-glass-whiskey"></i> Bebida:</label>
+                        <select id="product1">
+                            <option value="Limonada">Limonada</option>
+                        </select>
+                    </div>
+                    <div class="product-option">
+                        <label for="product2"><i class="fas fa-drumstick-bite"></i> Plato fuerte:</label>
+                        <select id="product2">
+                            <option value="Pizza">Pizza al estilo griego</option>
+                        </select>
+                    </div>
+                    <div class="product-option">
+                        <label for="product3"><i class="fas fa-ice-cream"></i> Postre:</label>
+                        <select id="product3">
+                            <option value="Postre">Baklava</option>
+                        </select>
+                    </div>
+                    <button id="submitOrder">
+                        <i class="fas fa-paper-plane"></i> Enviar Pedido
+                    </button>
+                </div>
+            </div>
+
+            <div class="order-status">
+                <h2><i class="fas fa-clock"></i> Progreso del Pedido</h2>
+                <div id="orderLog">
+                    <div class="welcome-message">
+                        <i class="fas fa-anchor"></i>
+                        <p>Ve como tu pedido se realiza en tiempo real.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> Costa Azul 123, Barcelona</p>
+                    <p><i class="fas fa-phone"></i> +34 123 456 789</p>
+                </div>
+                <div class="social-media">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <span>Elaborado Por <a href="https://github.com/AngelLeal22">Angel Leal <img src="/github.png" alt="logo" width="50px" 
+                height="50px"></a></span>
+        </footer>
+    </div>
+
+    <script src="Javascript.js"></script>
+    <script>
+        document.getElementById('submitOrder').addEventListener('click', function() {
+            const product1 = document.getElementById('product1').value;
+            const product2 = document.getElementById('product2').value;
+            const product3 = document.getElementById('product3').value;
+            
+            const orderLog = document.getElementById('orderLog');
+            orderLog.innerHTML = '';
+            
+            const originalConsoleLog = console.log;
+            console.log = function(message) {
+                const logEntry = document.createElement('div');
+                logEntry.className = 'log-entry';
+                
+                if(message.includes('Ordenando:')) {
+                    logEntry.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${message}`;
+                } else if(message.includes('procesando')) {
+                    logEntry.innerHTML = `<i class="fas fa-cogs"></i> ${message}`;
+                } else if(message.includes('Buen provecho')) {
+                    logEntry.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                    logEntry.classList.add('success');
+                } else if(message.includes('no esta disponible')) {
+                    logEntry.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+                    logEntry.classList.add('error');
+                } else {
+                    logEntry.textContent = message;
+                }
+                
+                orderLog.appendChild(logEntry);
+                originalConsoleLog.apply(console, arguments);
+                
+                // Auto-scroll to bottom
+                orderLog.scrollTop = orderLog.scrollHeight;
+            };
+            
+            realizarPedido(product1, product2, product3);
+        });
+    </script>
+</body>
+</html>
